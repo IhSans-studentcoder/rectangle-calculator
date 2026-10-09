@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas 1 | Ihsan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #060a14;
+            --panel: rgba(13, 20, 38, 0.75);
+            --line: rgba(56, 189, 248, 0.22);
+            --text: #e2e8f0;
+            --muted: #7c8aa5;
+            --panjang: #22d3ee;
+            --lebar: #f472b6;
+            --luas: #34d399;
+            --keliling: #a78bfa;
+            --mono: 'JetBrains Mono', Consolas, 'Courier New', monospace;
+            --display: 'Orbitron', 'Segoe UI', sans-serif;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
+            min-height: 100vh;
+            padding: 48px 20px;
+            background:
+                radial-gradient(800px 400px at 15% -10%, rgba(34, 211, 238, 0.18), transparent 60%),
+                radial-gradient(700px 500px at 100% 10%, rgba(167, 139, 250, 0.18), transparent 60%),
+                linear-gradient(rgba(148, 163, 184, 0.06) 1px, transparent 1px) 0 0 / 40px 40px,
+                linear-gradient(90deg, rgba(148, 163, 184, 0.06) 1px, transparent 1px) 0 0 / 40px 40px,
+                var(--bg);
+        }
+
+        /* ===== Header ===== */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--mono);
+            font-size: 12px;
+            letter-spacing: 2px;
+            color: var(--panjang);
+            border: 1px solid var(--line);
+            background: rgba(34, 211, 238, 0.07);
+            padding: 6px 14px;
+            border-radius: 999px;
+            margin-bottom: 18px;
+        }
+
+        .badge i {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--luas);
+            box-shadow: 0 0 10px var(--luas);
+            animation: pulse 1.6s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.35; transform: scale(0.75); }
+        }
+
+        h1 {
+            font-family: var(--display);
+            font-weight: 800;
+            font-size: clamp(26px, 4.4vw, 44px);
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #22d3ee, #a78bfa 55%, #f472b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 0 18px rgba(34, 211, 238, 0.35));
+        }
+
+        .subtitle {
+            margin-top: 12px;
+            color: var(--muted);
+            font-family: var(--mono);
+            font-size: 14px;
+        }
+
+        /* ===== Layout ===== */
+        .layout {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 24px;
+            max-width: 1040px;
+            margin: 0 auto;
+            align-items: start;
+        }
+
+        .card {
+            position: relative;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 28px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.02) inset, 0 24px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        /* siku sudut ala HUD */
+        .card::before,
+        .card::after {
+            content: "";
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--panjang);
+            opacity: 0.8;
+        }
+
+        .card::before {
+            top: -1px;
+            left: -1px;
+            border-right: none;
+            border-bottom: none;
+            border-top-left-radius: 20px;
+        }
+
+        .card::after {
+            bottom: -1px;
+            right: -1px;
+            border-left: none;
+            border-top: none;
+            border-bottom-right-radius: 20px;
+        }
+
+        .card h2 {
+            font-family: var(--mono);
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 22px;
+        }
+
+        .card h2 b {
+            color: var(--panjang);
+            font-weight: 600;
+        }
+
+        /* ===== Input ===== */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--mono);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        label.p { color: var(--panjang); }
+        label.l { color: var(--lebar); }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+
+        .dot.p { background: var(--panjang); box-shadow: 0 0 10px var(--panjang); }
+        .dot.l { background: var(--lebar); box-shadow: 0 0 10px var(--lebar); }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 14px 52px 14px 16px;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-radius: 12px;
+            font-family: var(--mono);
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+            background: rgba(2, 6, 18, 0.7);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        #inputPanjang:focus {
+            outline: none;
+            border-color: var(--panjang);
+            box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.18), 0 0 24px rgba(34, 211, 238, 0.25);
+        }
+
+        #inputLebar:focus {
+            outline: none;
+            border-color: var(--lebar);
+            box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.18), 0 0 24px rgba(244, 114, 182, 0.25);
+        }
+
+        .unit {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: var(--mono);
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .error {
+            display: none;
+            margin-top: 12px;
+            padding: 10px 14px;
+            font-family: var(--mono);
+            font-size: 13px;
+            color: #fda4af;
+            background: rgba(244, 63, 94, 0.1);
+            border: 1px solid rgba(244, 63, 94, 0.4);
+            border-radius: 10px;
+        }
+
+        /* ===== Ringkasan hasil ===== */
+        .result-section {
+            margin-top: 26px;
+            padding-top: 22px;
+            border-top: 1px dashed var(--line);
+            display: grid;
+            gap: 12px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            border-radius: 14px;
+            border: 1px solid;
+        }
+
+        .result-item.luas { border-color: rgba(52, 211, 153, 0.35); background: rgba(52, 211, 153, 0.07); }
+        .result-item.keliling { border-color: rgba(167, 139, 250, 0.35); background: rgba(167, 139, 250, 0.07); }
+
+        .result-label {
+            font-family: var(--mono);
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .result-value {
+            font-family: var(--mono);
+            font-weight: 800;
+            font-size: 22px;
+            word-break: break-all;
+            text-align: right;
+        }
+
+        .luas .result-value { color: var(--luas); text-shadow: 0 0 14px rgba(52, 211, 153, 0.5); }
+        .keliling .result-value { color: var(--keliling); text-shadow: 0 0 14px rgba(167, 139, 250, 0.5); }
+
+        /* ===== Penggambaran ===== */
+        .drawing {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 10px;
+            background:
+                linear-gradient(rgba(34, 211, 238, 0.05) 1px, transparent 1px) 0 0 / 24px 24px,
+                linear-gradient(90deg, rgba(34, 211, 238, 0.05) 1px, transparent 1px) 0 0 / 24px 24px,
+                rgba(2, 6, 18, 0.75);
+        }
+
+        /* garis pemindai */
+        .drawing::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 70px;
+            top: -70px;
+            background: linear-gradient(180deg, transparent, rgba(34, 211, 238, 0.09), transparent);
+            animation: scan 5s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes scan {
+            to { top: 100%; }
+        }
+
+        .drawing svg {
+            width: 100%;
+            height: auto;
+            display: block;
+            overflow: visible;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 18px;
+            margin: 14px 0 22px;
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .legend span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ===== Rumus ===== */
+        .formula-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .formula {
+            border-radius: 16px;
+            padding: 18px;
+            border: 1px solid;
+            min-width: 0;
+        }
+
+        .formula.luas { background: rgba(52, 211, 153, 0.06); border-color: rgba(52, 211, 153, 0.35); }
+        .formula.keliling { background: rgba(167, 139, 250, 0.06); border-color: rgba(167, 139, 250, 0.35); }
+
+        .formula h3 {
+            font-family: var(--mono);
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .formula.luas h3 { color: var(--luas); }
+        .formula.keliling h3 { color: var(--keliling); }
+
+        .formula .row {
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .formula .calc {
+            font-family: var(--mono);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            word-break: break-word;
+        }
+
+        .formula .final {
+            font-family: var(--mono);
+            font-size: 22px;
+            font-weight: 800;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed rgba(148, 163, 184, 0.3);
+            word-break: break-word;
+        }
+
+        .formula.luas .final { color: var(--luas); text-shadow: 0 0 14px rgba(52, 211, 153, 0.5); }
+        .formula.keliling .final { color: var(--keliling); text-shadow: 0 0 14px rgba(167, 139, 250, 0.5); }
+
+        .np { color: var(--panjang); font-weight: 800; }
+        .nl { color: var(--lebar); font-weight: 800; }
+
+        @media (max-width: 860px) {
+            .layout { grid-template-columns: 1fr; }
+            .formula-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="badge"><i></i> GEOMETRY.CALC // LIVE</div>
+        <h1>Luas &amp; Keliling Persegi Panjang</h1>
+        <p class="subtitle">&gt; ubah panjang dan lebar, gambar &amp; perhitungan langsung diperbarui</p>
+    </header>
+
+    <div class="layout">
+        <!-- Container kiri: input -->
+        <div class="card">
+            <h2><b>01</b> / Input Ukuran</h2>
+
+            <div class="input-group">
+                <label class="p" for="inputPanjang"><span class="dot p"></span> Panjang</label>
+                <div class="input-wrap">
+                    <input type="number" id="inputPanjang" value="10" min="1" step="0.1">
+                    <span class="unit">m</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label class="l" for="inputLebar"><span class="dot l"></span> Lebar</label>
+                <div class="input-wrap">
+                    <input type="number" id="inputLebar" value="5" min="1" step="0.1">
+                    <span class="unit">m</span>
+                </div>
+            </div>
+
+            <div class="error" id="error">! Panjang dan lebar harus berupa angka lebih dari 0.</div>
+
+            <div class="result-section">
+                <div class="result-item luas">
+                    <span class="result-label">Luas</span>
+                    <span class="result-value"><span id="luas">50</span> m²</span>
+                </div>
+                <div class="result-item keliling">
+                    <span class="result-label">Keliling</span>
+                    <span class="result-value"><span id="keliling">30</span> m</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Container kanan: penggambaran + rumus -->
+        <div class="card">
+            <h2><b>02</b> / Visualisasi</h2>
+
+            <div class="drawing" id="drawing"></div>
+
+            <div class="legend">
+                <span><i class="dot p"></i> Sisi panjang</span>
+                <span><i class="dot l"></i> Sisi lebar</span>
+                <span><i class="dot" style="background:var(--luas);box-shadow:0 0 10px var(--luas)"></i> 1 kotak = 1 m × 1 m = 1 m²</span>
+            </div>
+
+            <div class="formula-grid">
+                <div class="formula luas">
+                    <h3>Hasil perkalian Luas</h3>
+                    <div class="row">Luas = panjang × lebar</div>
+                    <div class="calc"><span class="np" id="fLuasP">10</span> × <span class="nl" id="fLuasL">5</span></div>
+                    <div class="final">= <span id="fLuasHasil">50</span> m²</div>
+                </div>
+                <div class="formula keliling">
+                    <h3>Hasil perkalian Keliling</h3>
+                    <div class="row">Keliling = 2 × (panjang + lebar)</div>
+                    <div class="calc">2 × (<span class="np" id="fKelP">10</span> + <span class="nl" id="fKelL">5</span>)</div>
+                    <div class="row" id="fKelTengah">2 × 15</div>
+                    <div class="final">= <span id="fKelHasil">30</span> m</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // merapikan angka agar tidak muncul 0.30000000000000004
+        function rapikan(n) {
+            return parseFloat(n.toFixed(2));
+        }
+
+        // label berbentuk pill di dalam gambar
+        function pill(cx, cy, teks, lebarPill, warna) {
+            return `
+                <rect x="${cx - lebarPill / 2}" y="${cy - 14}" width="${lebarPill}" height="28" rx="14"
+                      fill="#060a14" stroke="${warna}" stroke-width="1.5" filter="url(#glow)"/>
+                <text x="${cx}" y="${cy + 5}" text-anchor="middle" font-size="14" font-weight="800"
+                      fill="${warna}" font-family="JetBrains Mono, Consolas, monospace">${teks}</text>`;
+        }
+
+        function lebarPill(teks) {
+            return teks.length * 9 + 28;
+        }
+
+        function gambar(panjang, lebar) {
+            const VB_W = 480, VB_H = 300;
+
+            const teksP = "P = " + rapikan(panjang) + " m";
+            const teksL = "L = " + rapikan(lebar) + " m";
+            const pillP = lebarPill(teksP);
+            const pillL = lebarPill(teksL);
+
+            // sisakan ruang di kanan untuk label lebar supaya tidak terpotong
+            const margKiri = 30;
+            const margKanan = pillL + 30;
+            const areaW = VB_W - margKiri - margKanan;
+            const areaH = 190;
+
+            const skala = Math.min(areaW / panjang, areaH / lebar);
+            const w = panjang * skala;
+            const h = lebar * skala;
+            const x = margKiri + (areaW - w) / 2;
+            const y = 52 + (areaH - h) / 2;
+
+            // garis kotak 1 m (hanya jika tidak terlalu rapat)
+            let grid = "";
+            if (skala >= 8) {
+                for (let i = 1; i < panjang; i++) {
+                    const gx = x + i * skala;
+                    grid += `<line x1="${gx}" y1="${y}" x2="${gx}" y2="${y + h}" stroke="#34d399" stroke-opacity="0.28" stroke-width="1"/>`;
+                }
+                for (let j = 1; j < lebar; j++) {
+                    const gy = y + j * skala;
+                    grid += `<line x1="${x}" y1="${gy}" x2="${x + w}" y2="${gy}" stroke="#34d399" stroke-opacity="0.28" stroke-width="1"/>`;
+                }
+            }
+
+            const labelLuas = h >= 34 && w >= 70
+                ? `<text x="${x + w / 2}" y="${y + h / 2 + 6}" text-anchor="middle" font-size="16" font-weight="800"
+                         fill="#34d399" font-family="Orbitron, sans-serif" letter-spacing="2" filter="url(#glow)">LUAS</text>`
+                : "";
+
+            // titik sudut
+            const titik = [[x, y], [x + w, y], [x, y + h], [x + w, y + h]]
+                .map(([cx, cy]) => `<circle cx="${cx}" cy="${cy}" r="4.5" fill="#060a14" stroke="#e2e8f0" stroke-width="2"/>`)
+                .join("");
+
+            return `
+            <svg viewBox="0 0 ${VB_W} ${VB_H}" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="3" result="blur"/>
+                        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                </defs>
+
+                <rect x="${x}" y="${y}" width="${w}" height="${h}" fill="rgba(52,211,153,0.10)"/>
+                ${grid}
+
+                <!-- sisi panjang -->
+                <line x1="${x}" y1="${y}" x2="${x + w}" y2="${y}" stroke="#22d3ee" stroke-width="4" stroke-linecap="round" filter="url(#glow)"/>
+                <line x1="${x}" y1="${y + h}" x2="${x + w}" y2="${y + h}" stroke="#22d3ee" stroke-width="4" stroke-linecap="round" filter="url(#glow)"/>
+                <!-- sisi lebar -->
+                <line x1="${x}" y1="${y}" x2="${x}" y2="${y + h}" stroke="#f472b6" stroke-width="4" stroke-linecap="round" filter="url(#glow)"/>
+                <line x1="${x + w}" y1="${y}" x2="${x + w}" y2="${y + h}" stroke="#f472b6" stroke-width="4" stroke-linecap="round" filter="url(#glow)"/>
+
+                ${labelLuas}
+                ${titik}
+
+                <!-- label panjang (atas) -->
+                ${pill(x + w / 2, y - 26, teksP, pillP, "#22d3ee")}
+
+                <!-- label lebar (kanan, selalu di dalam area gambar) -->
+                ${pill(x + w + 18 + pillL / 2, y + h / 2, teksL, pillL, "#f472b6")}
+            </svg>`;
+        }
+
+        function hitungLuasKeliling() {
+            /*
+                ==Task 1==
+                Buat variable panjang dan lebar dengan tipe data number
+            */
+            let panjang = parseFloat(document.getElementById("inputPanjang").value);
+            let lebar = parseFloat(document.getElementById("inputLebar").value);
+
+            const error = document.getElementById("error");
+            if (isNaN(panjang) || isNaN(lebar) || panjang <= 0 || lebar <= 0) {
+                error.style.display = "block";
+                return;
+            }
+            error.style.display = "none";
+
+            /*
+                ==Task 2==
+                Buat variable luas yang berisi hasil perkalian panjang dan lebar
+            */
+            let luas = panjang * lebar;
+
+            /*
+                ==Task 3==
+                Buat variable keliling yang berisi hasil 2 * (panjang + lebar)
+            */
+            let keliling = 2 * (panjang + lebar);
+
+            // tampilkan hasil
+            document.getElementById("luas").innerHTML = rapikan(luas);
+            document.getElementById("keliling").innerHTML = rapikan(keliling);
+
+            // tampilkan penggambaran
+            document.getElementById("drawing").innerHTML = gambar(panjang, lebar);
+
+            // tampilkan rumus perkalian
+            document.getElementById("fLuasP").innerHTML = rapikan(panjang);
+            document.getElementById("fLuasL").innerHTML = rapikan(lebar);
+            document.getElementById("fLuasHasil").innerHTML = rapikan(luas);
+
+            document.getElementById("fKelP").innerHTML = rapikan(panjang);
+            document.getElementById("fKelL").innerHTML = rapikan(lebar);
+            document.getElementById("fKelTengah").innerHTML = "2 × " + rapikan(panjang + lebar);
+            document.getElementById("fKelHasil").innerHTML = rapikan(keliling);
+        }
+
+        // jalankan saat halaman dimuat
+        hitungLuasKeliling();
+
+        // jalankan saat input berubah (langsung saat mengetik)
+        document.getElementById("inputPanjang").addEventListener("input", hitungLuasKeliling);
+        document.getElementById("inputLebar").addEventListener("input", hitungLuasKeliling);
+    </script>
+</body>
+</html>
